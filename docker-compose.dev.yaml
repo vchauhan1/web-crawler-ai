@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Backend Service - Development Mode
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    container_name: web-crawler-ai-backend-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - ./logs:/usr/src/app/logs
+      - ./data:/usr/src/app/data
+      - ./exports:/usr/src/app/exports
+    networks:
+      - web-crawler-network-dev
+    restart: unless-stopped
+    command: npm run dev
+
+  # Frontend Service - Development Mode
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+      target: development
+    container_name: web-crawler-ai-frontend-dev
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - NEXT_PUBLIC_API_URL=http://localhost:3000/api
+      - HOSTNAME=0.0.0.0
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    networks:
+      - web-crawler-network-dev
+    restart: unless-stopped
+    command: npm run dev
+
+# Network configuration
+networks:
+  web-crawler-network-dev:
+    driver: bridge
+    name: web-crawler-network-dev

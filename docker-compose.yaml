@@ -1,0 +1,71 @@
+# version: '3.8'
+
+services:
+  # Backend Service - Web Crawler AI API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web-crawler-ai-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+    volumes:
+      - ./logs:/usr/src/app/logs
+      - ./data:/usr/src/app/data
+      - ./exports:/usr/src/app/exports
+    networks:
+      - web-crawler-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Frontend Service - Next.js Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: web-crawler-ai-frontend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - NEXT_PUBLIC_API_URL=http://backend:3000/api
+      - HOSTNAME=0.0.0.0
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - web-crawler-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+# Network configuration
+networks:
+  web-crawler-network:
+    driver: bridge
+    name: web-crawler-network
+
+# Volume configuration for data persistence
+volumes:
+  crawler_logs:
+    driver: local
+  crawler_data:
+    driver: local
+  crawler_exports:
+    driver: local
