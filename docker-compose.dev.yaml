@@ -4,7 +4,7 @@ services:
   # Backend Service - Development Mode
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile.dev
       target: development
     container_name: web-crawler-ai-backend-dev
@@ -17,11 +17,11 @@ services:
       - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
       - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
     volumes:
-      - .:/usr/src/app
+      - ./backend:/usr/src/app
       - /usr/src/app/node_modules
-      - ./logs:/usr/src/app/logs
-      - ./data:/usr/src/app/data
-      - ./exports:/usr/src/app/exports
+      - ./backend/logs:/usr/src/app/logs
+      - ./backend/data:/usr/src/app/data
+      - ./backend/exports:/usr/src/app/exports
     networks:
       - web-crawler-network-dev
     restart: unless-stopped

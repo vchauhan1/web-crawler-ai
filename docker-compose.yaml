@@ -4,7 +4,7 @@ services:
   # Backend Service - Web Crawler AI API
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     container_name: web-crawler-ai-backend
     ports:
@@ -16,9 +16,9 @@ services:
       - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
       - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
     volumes:
-      - ./logs:/usr/src/app/logs
-      - ./data:/usr/src/app/data
-      - ./exports:/usr/src/app/exports
+      - ./backend/logs:/usr/src/app/logs
+      - ./backend/data:/usr/src/app/data
+      - ./backend/exports:/usr/src/app/exports
     networks:
       - web-crawler-network
     restart: unless-stopped

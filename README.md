@@ -2,6 +2,34 @@
 
 An intelligent web crawler and semantic search engine with advanced AI-powered reports generation. Features a sophisticated 4-stage AI research agent that conducts comprehensive web analysis and generates professional-grade reports.
 
+## 🖼️ Screenshots
+
+<div align="center">
+
+### 🏠 Main Dashboard
+*Beautiful, modern interface with real-time analytics and quick actions*
+
+![Dashboard](screenshots/dashboard.png)
+
+### 🔍 Advanced Search Interface  
+*Intelligent search with AI-powered query analysis and real-time results*
+
+![Search Interface](screenshots/search.png)
+
+### 📊 AI Reports Generation
+*Comprehensive report generation with 4-stage AI analysis pipeline*
+
+![Reports Interface](screenshots/reports.png)
+
+### 📈 Analytics & Statistics
+*Detailed insights into crawling performance and data quality metrics*
+
+![Analytics](screenshots/analytics.png)
+
+</div>
+
+---
+
 ## ✨ Features
 
 ### 🔬 Advanced AI Research Agent
@@ -82,25 +110,25 @@ chmod +x scripts/docker-build.sh
 #### Production Deployment
 ```bash
 # Build and start both services
-docker-compose up --build -d
+docker compose up --build -d
 
 # View logs
-docker-compose logs -f
+docker compose logs -f
 
 # Stop services
-docker-compose down
+docker compose down
 ```
 
 #### Development Environment
 ```bash
 # Start development environment with hot reload
-docker-compose -f docker-compose.dev.yaml up --build
+docker compose -f docker-compose.dev.yaml up --build
 
 # View logs
-docker-compose -f docker-compose.dev.yaml logs -f
+docker compose -f docker-compose.dev.yaml logs -f
 
 # Stop development environment
-docker-compose -f docker-compose.dev.yaml down
+docker compose -f docker-compose.dev.yaml down
 ```
 
 ### 3. Access the Application
@@ -115,8 +143,24 @@ docker-compose -f docker-compose.dev.yaml down
 - Node.js v20+
 - npm v9+
 
-### Backend Setup
+### Quick Start (Recommended)
 ```bash
+# Install dependencies for both services
+npm run install:all
+
+# Start both backend and frontend concurrently
+npm run dev
+# Backend runs on http://localhost:3000
+# Frontend runs on http://localhost:3001
+```
+
+### Individual Service Setup
+
+#### Backend Setup
+```bash
+# Navigate to backend directory
+cd backend
+
 # Install backend dependencies
 npm install
 
@@ -125,7 +169,7 @@ npm start
 # Backend runs on http://localhost:3000
 ```
 
-### Frontend Setup
+#### Frontend Setup
 ```bash
 # Navigate to frontend directory
 cd frontend
@@ -133,7 +177,7 @@ cd frontend
 # Install frontend dependencies
 npm install
 
-# Start frontend development server
+# Start frontend development server (on port 3001)
 npm run dev -- -p 3001
 # Frontend runs on http://localhost:3001
 ```
@@ -266,21 +310,6 @@ curl http://localhost:3001
 docker-compose ps
 ```
 
-### Logs and Debugging
-```bash
-# View all logs
-docker-compose logs
-
-# Follow logs in real-time
-docker-compose logs -f
-
-# View logs for last 100 lines
-docker-compose logs --tail=100
-
-# View specific service logs
-docker-compose logs backend
-docker-compose logs frontend
-```
 
 ### Performance Monitoring
 - **Metrics Endpoint**: http://localhost:3000/metrics (Prometheus format)
@@ -292,12 +321,12 @@ docker-compose logs frontend
 ### Development Testing
 ```bash
 # Run tests in development environment
-docker-compose -f docker-compose.dev.yaml exec backend npm test
-docker-compose -f docker-compose.dev.yaml exec frontend npm run lint
+docker compose -f docker-compose.dev.yaml exec backend npm test
+docker compose -f docker-compose.dev.yaml exec frontend npm run lint
 
 # Run specific test suites
-docker-compose -f docker-compose.dev.yaml exec backend npm run test:unit
-docker-compose -f docker-compose.dev.yaml exec backend npm run test:integration
+docker compose -f docker-compose.dev.yaml exec backend npm run test:unit
+docker compose -f docker-compose.dev.yaml exec backend npm run test:integration
 ```
 
 ## 🚀 Advanced Features
@@ -338,16 +367,16 @@ docker-compose -f docker-compose.dev.yaml up
 ### Code Quality
 ```bash
 # Lint backend code
-docker-compose exec backend npm run lint
+docker compose exec backend npm run lint
 
 # Format code
-docker-compose exec backend npm run format
+docker compose exec backend npm run format
 
 # Run tests
-docker-compose exec backend npm test
+docker compose exec backend npm test
 
 # Security audit
-docker-compose exec backend npm audit
+docker compose exec backend npm audit
 ```
 
 ## 🛠️ Troubleshooting
@@ -358,7 +387,7 @@ docker-compose exec backend npm audit
 ```bash
 # Error: sh: husky: not found
 # Solution: Use our fixed Dockerfiles that skip scripts
-docker-compose build --no-cache
+docker compose build --no-cache
 ```
 
 #### 2. Damaged package-lock.json
@@ -427,6 +456,3 @@ If issues persist:
 
 ## Contributing
 Pull requests welcome! Please open issues for bugs or feature requests.
-
-## License
-MIT 
