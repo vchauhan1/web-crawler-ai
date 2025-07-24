@@ -200,7 +200,6 @@ ecosystem.config.js
 .chromium/
 
 # Screenshots and videos (testing)
-screenshots/
 videos/
 
 # Application exports and data
